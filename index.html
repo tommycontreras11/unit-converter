@@ -7,6 +7,13 @@
   </head>
   <body>
     <h1>Unit Converter</h1>
+
+    <select name="unit" id="unit">
+      <option value="length">Length</option>
+      <option value="weight">Weight</option>
+      <option value="temperature">Temperature</option>
+    </select>
+
     <form target="_self" id="unit-converter-form">
       <label for="length-to-convert">Enter the length to convert</label>
       <input type="text" name="length-to-convert" id="length-to-convert" />
@@ -14,25 +21,11 @@
       <label for="unit-to-convert-from">Unit to convert from</label>
       <select name="unit-to-convert-from" id="unit-to-convert-from">
         <option value="">Select an option:</option>
-        <option value="millimeter">millimeter</option>
-        <option value="centimeter">centimeter</option>
-        <option value="meter">meter</option>
-        <option value="kilometer">kilometer</option>
-        <option value="inch">inch</option>
-        <option value="yard">yard</option>
-        <option value="mile">mile</option>
       </select>
 
       <label for="unit-to-convert-to">Unit to convert to</label>
       <select name="unit-to-convert-to" id="unit-to-convert-to">
         <option value="">Select an option:</option>
-        <option value="millimeter">millimeter</option>
-        <option value="centimeter">centimeter</option>
-        <option value="meter">meter</option>
-        <option value="kilometer">kilometer</option>
-        <option value="inch">inch</option>
-        <option value="yard">yard</option>
-        <option value="mile">mile</option>
       </select>
 
       <button type="submit">Convert</button>
