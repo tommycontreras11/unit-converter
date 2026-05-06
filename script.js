@@ -76,47 +76,24 @@ let unitToConvertTo = document.getElementById("unit-to-convert-to");
 
 let error = document.getElementById("error");
 
+let unitName = 0
+
 cleanError = () => {
-if (error.textContent) {
+  if (error.textContent) {
     error.innerText = "";
   }
-}
+};
 
 setError = (message) => {
-  cleanError()
-  error.style.display = "block"
-  error.style.color = "red"
+  cleanError();
+  error.style.display = "block";
+  error.style.color = "red";
   error.innerText = message;
 };
 
 const unit = document.getElementById("unit");
-let unitValue = unit.value;
 
-let unitsSelected = units[unitValue];
-
-unit.addEventListener("change", (event) => {
-  unitValue = event.target.value;
-
-  unitsSelected = units[unitValue];
-  removeChildOptionsFromSelect(
-    unitToConvertFrom.children.length,
-    unitToConvertFrom,
-    unitToConvertTo,
-  );
-  addOptionsToSelects(unitsSelected, name, unitToConvertFrom, unitToConvertTo);
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  unitsSelected = units[unitValue];
-  addOptionsToSelects(unitsSelected, name, unitToConvertFrom, unitToConvertTo);
-});
-
-addOptionsToSelects = (
-  unitsSelected,
-  name,
-  unitToConvertFrom,
-  unitToConvertTo,
-) => {
+addOptionsToSelects = (unitsSelected, unitToConvertFrom, unitToConvertTo) => {
   for (let i = 0; i < unitsSelected.length; i++) {
     let name = unitsSelected[i].name;
 
@@ -140,6 +117,36 @@ removeChildOptionsFromSelect = (
   }
 };
 
+setUnit = (event, unitType) => {
+  let activeElement = unit.getElementsByClassName("active")[0];
+  activeElement.classList.remove("active");
+
+  event.target.classList.add("active");
+
+  unitName = unitType
+
+  unitsSelected = units[unitType];
+
+  removeChildOptionsFromSelect(
+    unitToConvertFrom.children.length,
+    unitToConvertFrom,
+    unitToConvertTo,
+  );
+  addOptionsToSelects(unitsSelected, unitToConvertFrom, unitToConvertTo);
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  let activeElement = unit
+    .getElementsByClassName("active")[0]
+    .textContent.toLowerCase()
+    .trim();
+
+  unitType = activeElement
+
+  unitsSelected = units[activeElement];
+  addOptionsToSelects(unitsSelected, unitToConvertFrom, unitToConvertTo);
+});
+
 const form = document.getElementById("unit-converter-form");
 let convertResult = document.getElementById("converted-result");
 
@@ -156,15 +163,15 @@ form.addEventListener("submit", (event) => {
     (u) => u.name === formData.get("unit-to-convert-to"),
   );
 
-  if(unitToConvertFrom.name === unitToConvertTo.name) {
-    setError("The units to be converted must be different.")
+  if (unitToConvertFrom.name === unitToConvertTo.name) {
+    setError("The units to be converted must be different.");
   } else {
-    cleanError()
+    cleanError();
   }
 
   let result = 0;
 
-  if (unitValue === "temperature") {
+  if (unitName === "temperature") {
     if (
       unitToConvertFrom.name === "celsius" &&
       unitToConvertTo.name === "fahrenheit"

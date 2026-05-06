@@ -8,14 +8,20 @@
   <body>
     <h1>Unit Converter</h1>
 
-    <select name="unit" id="unit">
-      <option value="length">Length</option>
-      <option value="weight">Weight</option>
-      <option value="temperature">Temperature</option>
-    </select>
+    <div class="tab" id="unit">
+      <button class="tablinks active" onclick="setUnit(event, 'length')">
+        Length
+      </button>
+      <button class="tablinks" onclick="setUnit(event, 'weight')">
+        Weight
+      </button>
+      <button class="tablinks" onclick="setUnit(event, 'temperature')">
+        Temperature
+      </button>
+    </div>
 
     <form target="_self" id="unit-converter-form">
-      <p id="error" style="display: none;"></p>
+      <p id="error" style="display: none"></p>
       <label for="length-to-convert">Enter the length to convert</label>
       <input type="number" name="length-to-convert" id="length-to-convert" />
 
