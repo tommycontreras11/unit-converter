@@ -133,45 +133,55 @@ form.addEventListener("submit", (event) => {
 
   const formData = new FormData(form);
 
-  const lengthToConvert = formData.get("length-to-convert");
+  const lengthToConvert = Number(formData.get("length-to-convert"));
   const unitToConvertFrom = unitsSelected.find(
     (u) => u.name === formData.get("unit-to-convert-from"),
-  ).value;
+  );
   const unitToConvertTo = unitsSelected.find(
     (u) => u.name === formData.get("unit-to-convert-to"),
-  ).value;
+  );
 
   let result = 0;
 
-  if (unit === "temperature") {
-    if (unitToConvertFrom === "celsius" && unitToConvertTo === "fahrenheit") {
+  if (unitValue === "temperature") {
+      console.log("unitToConvertFrom: ", unitToConvertFrom)
+      console.log("unitToConvertTo: ", unitToConvertTo)
+
+    if (unitToConvertFrom.name === "celsius" && unitToConvertTo.name === "fahrenheit") {
       result = (lengthToConvert * 9) / 5 + 32;
     } else if (
-      unitToConvertFrom === "fahrenheit" &&
-      unitToConvertTo === "celsius"
+      unitToConvertFrom.name === "fahrenheit" &&
+      unitToConvertTo.name === "celsius"
     ) {
       result = ((lengthToConvert - 32) * 5) / 9;
-    }
-
-    if (unitToConvertFrom === "celsius" && unitToConvertTo === "kelvin") {
+    } 
+    
+    else if (
+      unitToConvertFrom.name === "celsius" &&
+      unitToConvertTo.name === "kelvin"
+    ) {
       result = lengthToConvert + 273.15;
     } else if (
-      unitToConvertFrom === "kelvin" &&
-      unitToConvertTo === "celsius"
+      unitToConvertFrom.name === "kelvin" &&
+      unitToConvertTo.name === "celsius"
     ) {
       result = lengthToConvert - 273.15;
-    }
-
-    if (unitToConvertFrom === "fahrenheit" && unitToConvertTo === "kelvin") {
+    } 
+    
+    else if (
+      unitToConvertFrom.name === "fahrenheit" &&
+      unitToConvertTo.name === "kelvin"
+    ) {
       result = ((lengthToConvert - 32) * 5) / 9 + 273.15;
     } else if (
-      unitToConvertFrom === "kelvin" &&
-      unitToConvertTo === "fahrenheit"
+      unitToConvertFrom.name === "kelvin" &&
+      unitToConvertTo.name === "fahrenheit"
     ) {
-      result = ((lengthToConvert - 273.15) * 9) / 5 + 32;
+      result = ((lengthToConvert - 273.15) * 9 / 5) + 32;
     }
+
   } else {
-    result = (lengthToConvert * unitToConvertFrom) / unitToConvertTo;
+    result = (lengthToConvert * unitToConvertFrom.value) / unitToConvertTo.value;
   }
 
   if (result >= 1000) result = result.toFixed(2);
@@ -179,5 +189,4 @@ form.addEventListener("submit", (event) => {
   else result = result.toFixed(6);
 
   convertResult.innerText = Number(result).toLocaleString();
-  console.log(unit);
 });
