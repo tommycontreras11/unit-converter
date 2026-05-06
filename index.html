@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Unit Converter</title>
   </head>
   <body>
@@ -20,24 +21,33 @@
       </button>
     </div>
 
-    <form target="_self" id="unit-converter-form">
+    <form target="_self" class="form" id="unit-converter-form">
       <p id="error" style="display: none"></p>
-      <label for="length-to-convert">Enter the length to convert</label>
-      <input type="number" name="length-to-convert" id="length-to-convert" />
+      <div class="form-input">
+        <label for="length-to-convert">Enter the length to convert</label>
+        <input type="number" name="length-to-convert" id="length-to-convert" />
+      </div>
 
-      <label for="unit-to-convert-from">Unit to convert from</label>
-      <select name="unit-to-convert-from" id="unit-to-convert-from">
-        <option value="">Select an option:</option>
-      </select>
+      <div class="form-input">
+        <label for="unit-to-convert-from">Unit to convert from</label>
+        <select name="unit-to-convert-from" id="unit-to-convert-from">
+          <option value="">Select an option:</option>
+        </select>
+      </div>
 
-      <label for="unit-to-convert-to">Unit to convert to</label>
-      <select name="unit-to-convert-to" id="unit-to-convert-to">
-        <option value="">Select an option:</option>
-      </select>
+      <div class="form-input">
+        <label for="unit-to-convert-to">Unit to convert to</label>
+        <select name="unit-to-convert-to" id="unit-to-convert-to">
+          <option value="">Select an option:</option>
+        </select>
+      </div>
 
       <button type="submit">Convert</button>
     </form>
+    
+    <p id="result-calc-lbl">Result of your calculation</p>
     <p id="converted-result"></p>
+    <button id="reset">Reset</button>
   </body>
   <script src="script.js"></script>
 </html>

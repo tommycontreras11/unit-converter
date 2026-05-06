@@ -1,0 +1,78 @@
+.tab {
+    overflow: hidden; 
+    margin-bottom: 15px;
+}
+
+.tab button {
+    background-color: white;  
+    border: none;
+    margin: 0 15px 0 0;
+}
+
+.tab button.active {
+    border-bottom: 2px solid #ccc;  
+    border-bottom-color: blue;
+}
+
+.form .form-input {
+    margin: 10px 10px 0 0;
+    font-weight: bold;
+}
+
+.form .form-input label {
+    display: block;
+}
+
+.form .form-input input {
+    width: 180px;
+    margin: 5px 0 0 0;
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+.form .form-input select {
+    width: 180px;
+    height: 26px;
+    margin: 5px 0 0 0;
+    border: 2px solid black;
+    border-radius: 3px;
+}
+
+.form button {
+    width: 120px;
+    height: 35px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 10px 0 0 0;
+}
+
+.form button:hover {
+    background-color: #f3f4f6;
+    cursor: pointer;
+}
+
+#result-calc-lbl {
+    font-weight: bold;
+    display: none;
+}
+
+#converted-result {
+    font-weight: bold;
+    display: none;
+}
+
+#reset {
+    display: none;
+    width: 120px;
+    height: 35px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px;
+    margin: 10px 0 0 0;
+}
+
+#reset:hover {
+    background-color: #f3f4f6;
+    cursor: pointer;
+}

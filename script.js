@@ -2,70 +2,88 @@ const units = {
   length: [
     {
       name: "millimeter",
+      abbreviation: "mm",
       value: 0.001,
     },
     {
       name: "centimeter",
+      abbreviation: "cm",
       value: 0.01,
     },
     {
       name: "meter",
+      abbreviation: "m",
       value: 1,
     },
     {
       name: "kilometer",
+      abbreviation: "km",
       value: 1000,
     },
     {
       name: "inch",
+      abbreviation: "in",
       value: 0.0254,
     },
     {
       name: "foot",
+      abbreviation: "ft",
       value: 0.3048,
     },
     {
       name: "yard",
+      abbreviation: "yd",
       value: 0.9144,
     },
     {
       name: "mile",
+      abbreviation: "mi",
       value: 1609.344,
     },
   ],
+
   weight: [
     {
       name: "milligram",
+      abbreviation: "mg",
       value: 0.001,
     },
     {
       name: "gram",
+      abbreviation: "g",
       value: 1,
     },
     {
       name: "kilogram",
+      abbreviation: "kg",
       value: 1000,
     },
     {
       name: "ounce",
+      abbreviation: "oz",
       value: 28.3495,
     },
     {
       name: "pound",
+      abbreviation: "lb",
       value: 453.592,
     },
   ],
+
   temperature: [
     {
       name: "celsius",
+      abbreviation: "°C",
       value: 1,
     },
     {
       name: "fahrenheit",
+      abbreviation: "°F",
       value: 1,
     },
     {
       name: "kelvin",
+      abbreviation: "K",
       value: 1,
     },
   ],
@@ -76,7 +94,7 @@ let unitToConvertTo = document.getElementById("unit-to-convert-to");
 
 let error = document.getElementById("error");
 
-let unitName = 0
+let unitName = 0;
 
 cleanError = () => {
   if (error.textContent) {
@@ -96,11 +114,13 @@ const unit = document.getElementById("unit");
 addOptionsToSelects = (unitsSelected, unitToConvertFrom, unitToConvertTo) => {
   for (let i = 0; i < unitsSelected.length; i++) {
     let name = unitsSelected[i].name;
+    let nameToTitle =
+      name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 
     unitToConvertFrom.innerHTML +=
-      "<option value=" + name + ">" + name + "</option>";
+      "<option value=" + name + ">" + nameToTitle + "</option>";
     unitToConvertTo.innerHTML +=
-      "<option value=" + name + ">" + name + "</option>";
+      "<option value=" + name + ">" + nameToTitle + "</option>";
   }
 };
 
@@ -123,7 +143,7 @@ setUnit = (event, unitType) => {
 
   event.target.classList.add("active");
 
-  unitName = unitType
+  unitName = unitType;
 
   unitsSelected = units[unitType];
 
@@ -141,25 +161,29 @@ document.addEventListener("DOMContentLoaded", () => {
     .textContent.toLowerCase()
     .trim();
 
-  unitType = activeElement
+  unitType = activeElement;
 
   unitsSelected = units[activeElement];
   addOptionsToSelects(unitsSelected, unitToConvertFrom, unitToConvertTo);
 });
 
 const form = document.getElementById("unit-converter-form");
+
+let resultCalcLbl = document.getElementById("result-calc-lbl");
 let convertResult = document.getElementById("converted-result");
+
+let btnReset = document.getElementById("reset");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
   const formData = new FormData(form);
 
-  const lengthToConvert = Number(formData.get("length-to-convert"));
-  const unitToConvertFrom = unitsSelected.find(
+  let lengthToConvert = Number(formData.get("length-to-convert"));
+  let unitToConvertFrom = unitsSelected.find(
     (u) => u.name === formData.get("unit-to-convert-from"),
   );
-  const unitToConvertTo = unitsSelected.find(
+  let unitToConvertTo = unitsSelected.find(
     (u) => u.name === formData.get("unit-to-convert-to"),
   );
 
@@ -212,5 +236,23 @@ form.addEventListener("submit", (event) => {
   else if (result >= 1) result = result.toFixed(4);
   else result = result.toFixed(6);
 
-  convertResult.innerText = Number(result).toLocaleString();
+  convertResult.innerText = `${lengthToConvert} ${unitToConvertFrom.abbreviation} = ${Number(result).toLocaleString()} ${unitToConvertTo.abbreviation}`;
+
+  form.style.display = "none";
+
+  convertResult.style.display = "block";
+  resultCalcLbl.style.display = "block";
+  btnReset.style.display = "block";
+});
+
+btnReset.addEventListener("click", () => {
+  form.style.display = "block";
+
+  convertResult.style.display = "none";
+  resultCalcLbl.style.display = "none";
+  btnReset.style.display = "none";
+
+  document.getElementById("length-to-convert").value = ""
+  document.getElementById("unit-to-convert-from").value = ""
+  document.getElementById("unit-to-convert-to").value = ""
 });
