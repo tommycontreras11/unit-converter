@@ -15,8 +15,9 @@
     </select>
 
     <form target="_self" id="unit-converter-form">
+      <p id="error" style="display: none;"></p>
       <label for="length-to-convert">Enter the length to convert</label>
-      <input type="text" name="length-to-convert" id="length-to-convert" />
+      <input type="number" name="length-to-convert" id="length-to-convert" />
 
       <label for="unit-to-convert-from">Unit to convert from</label>
       <select name="unit-to-convert-from" id="unit-to-convert-from">
@@ -30,7 +31,7 @@
 
       <button type="submit">Convert</button>
     </form>
-    <p id="convert-result"></p>
+    <p id="converted-result"></p>
   </body>
   <script src="script.js"></script>
 </html>

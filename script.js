@@ -74,6 +74,21 @@ const units = {
 let unitToConvertFrom = document.getElementById("unit-to-convert-from");
 let unitToConvertTo = document.getElementById("unit-to-convert-to");
 
+let error = document.getElementById("error");
+
+cleanError = () => {
+if (error.textContent) {
+    error.innerText = "";
+  }
+}
+
+setError = (message) => {
+  cleanError()
+  error.style.display = "block"
+  error.style.color = "red"
+  error.innerText = message;
+};
+
 const unit = document.getElementById("unit");
 let unitValue = unit.value;
 
@@ -126,7 +141,7 @@ removeChildOptionsFromSelect = (
 };
 
 const form = document.getElementById("unit-converter-form");
-let convertResult = document.getElementById("convert-result");
+let convertResult = document.getElementById("converted-result");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -141,22 +156,26 @@ form.addEventListener("submit", (event) => {
     (u) => u.name === formData.get("unit-to-convert-to"),
   );
 
+  if(unitToConvertFrom.name === unitToConvertTo.name) {
+    setError("The units to be converted must be different.")
+  } else {
+    cleanError()
+  }
+
   let result = 0;
 
   if (unitValue === "temperature") {
-      console.log("unitToConvertFrom: ", unitToConvertFrom)
-      console.log("unitToConvertTo: ", unitToConvertTo)
-
-    if (unitToConvertFrom.name === "celsius" && unitToConvertTo.name === "fahrenheit") {
+    if (
+      unitToConvertFrom.name === "celsius" &&
+      unitToConvertTo.name === "fahrenheit"
+    ) {
       result = (lengthToConvert * 9) / 5 + 32;
     } else if (
       unitToConvertFrom.name === "fahrenheit" &&
       unitToConvertTo.name === "celsius"
     ) {
       result = ((lengthToConvert - 32) * 5) / 9;
-    } 
-    
-    else if (
+    } else if (
       unitToConvertFrom.name === "celsius" &&
       unitToConvertTo.name === "kelvin"
     ) {
@@ -166,9 +185,7 @@ form.addEventListener("submit", (event) => {
       unitToConvertTo.name === "celsius"
     ) {
       result = lengthToConvert - 273.15;
-    } 
-    
-    else if (
+    } else if (
       unitToConvertFrom.name === "fahrenheit" &&
       unitToConvertTo.name === "kelvin"
     ) {
@@ -177,11 +194,11 @@ form.addEventListener("submit", (event) => {
       unitToConvertFrom.name === "kelvin" &&
       unitToConvertTo.name === "fahrenheit"
     ) {
-      result = ((lengthToConvert - 273.15) * 9 / 5) + 32;
+      result = ((lengthToConvert - 273.15) * 9) / 5 + 32;
     }
-
   } else {
-    result = (lengthToConvert * unitToConvertFrom.value) / unitToConvertTo.value;
+    result =
+      (lengthToConvert * unitToConvertFrom.value) / unitToConvertTo.value;
   }
 
   if (result >= 1000) result = result.toFixed(2);
