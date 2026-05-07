@@ -92,22 +92,99 @@ const units = {
 let unitToConvertFrom = document.getElementById("unit-to-convert-from");
 let unitToConvertTo = document.getElementById("unit-to-convert-to");
 
-let error = document.getElementById("error");
+let lengthValueError = document.getElementById("length-value-error");
+let unitToConvertFromValueError = document.getElementById(
+  "unit-to-convert-from-value-error",
+);
+let unitToConvertToValueError = document.getElementById(
+  "unit-to-convert-to-value-error",
+);
 
 let unitName = 0;
 
-cleanError = () => {
-  if (error.textContent) {
-    error.innerText = "";
+// This is how i can get the id from the input
+console.log(
+  "input id: ",
+  document.querySelectorAll(".form .form-input p")[0].getAttribute("id"),
+);
+
+cleanErrorFields = () => {
+  let pElements = document.querySelectorAll(".form .form-input p");
+
+  for (let i = 0; i < pElements.length; i++) {
+    let id = pElements[i].getAttribute("id");
+
+    let pElement = document.getElementById(id);
+
+    if (pElement.textContent) {
+      pElement.innerHTML = "";
+      pElement.style.display = "none";
+    }
   }
 };
 
-setError = (message) => {
-  cleanError();
-  error.style.display = "block";
-  error.style.color = "red";
-  error.innerText = message;
+validateFields = () => {
+  let pElements = document.querySelectorAll(".form .form-input p");
+  let error = false;
+
+  for (let i = 0; i < pElements.length; i++) {
+    let id = pElements[i].getAttribute("id");
+
+    // Inputs to validate
+    let tagName = pElements[i].previousElementSibling.tagName;
+    let inputId = pElements[i].previousElementSibling.id;
+
+    let pElement = document.getElementById(id);
+    let input = document.getElementById(inputId).value;
+
+    let message = "";
+
+    if (tagName === "INPUT") {
+      if (input === "") {
+        message = "The value is required";
+
+        pElement.innerText = message;
+        pElement.style.display = "block";
+        pElement.style.color = "red";
+
+        error = true;
+      } else if (isNaN(Number(input))) {
+        message = "The value must be a number";
+
+        pElement.innerText = message;
+        pElement.style.display = "block";
+        pElement.style.color = "red";
+
+        error = true;
+      }
+
+      if (error === false) cleanErrorFields();
+    }
+
+    if (tagName === "SELECT") {
+      if (input === "" || input === undefined) {
+        message = "The value is required";
+
+        pElement.innerText = message;
+        pElement.style.display = "block";
+        pElement.style.color = "red";
+
+        error = true;
+      }
+
+      if (error === false) cleanErrorFields();
+    }
+  }
+
+  return error;
 };
+
+// This is how i can get the tagname, i mean it says if the element is a p, select, etc
+console.log(
+  "input id: ",
+  document.querySelectorAll(".form .form-input p")[0].previousElementSibling
+    .tagName,
+);
 
 const unit = document.getElementById("unit");
 
@@ -187,11 +264,12 @@ form.addEventListener("submit", (event) => {
     (u) => u.name === formData.get("unit-to-convert-to"),
   );
 
-  if (unitToConvertFrom.name === unitToConvertTo.name) {
-    setError("The units to be converted must be different.");
-  } else {
-    cleanError();
-  }
+  const isInvalidForm = validateFields();
+
+  if (isInvalidForm) return;
+  else cleanErrorFields();
+
+  console.log("HOLA");
 
   let result = 0;
 
@@ -252,7 +330,7 @@ btnReset.addEventListener("click", () => {
   resultCalcLbl.style.display = "none";
   btnReset.style.display = "none";
 
-  document.getElementById("length-to-convert").value = ""
-  document.getElementById("unit-to-convert-from").value = ""
-  document.getElementById("unit-to-convert-to").value = ""
+  document.getElementById("length-to-convert").value = "";
+  document.getElementById("unit-to-convert-from").value = "";
+  document.getElementById("unit-to-convert-to").value = "";
 });

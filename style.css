@@ -76,3 +76,15 @@
     background-color: #f3f4f6;
     cursor: pointer;
 }
+
+#length-value-error {
+    font-size: 12px;
+}
+
+#unit-to-convert-from-value-error {
+    font-size: 12px;    
+}
+
+#unit-to-convert-to-value-error {
+    font-size: 12px;
+}

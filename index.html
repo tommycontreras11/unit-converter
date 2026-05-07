@@ -22,29 +22,44 @@
     </div>
 
     <form target="_self" class="form" id="unit-converter-form">
-      <p id="error" style="display: none"></p>
       <div class="form-input">
         <label for="length-to-convert">Enter the length to convert</label>
-        <input type="number" name="length-to-convert" id="length-to-convert" />
+        <input
+          type="text"
+          name="length-to-convert"
+          id="length-to-convert"
+          aria-describedby="length-value-error"
+        />
+        <p id="length-value-error" style="display: none"></p>
       </div>
 
       <div class="form-input">
         <label for="unit-to-convert-from">Unit to convert from</label>
-        <select name="unit-to-convert-from" id="unit-to-convert-from">
+        <select
+          name="unit-to-convert-from"
+          id="unit-to-convert-from"
+          aria-describedby="unit-to-convert-from-value-error"
+        >
           <option value="">Select an option:</option>
         </select>
+        <p id="unit-to-convert-from-value-error" style="display: none"></p>
       </div>
 
       <div class="form-input">
         <label for="unit-to-convert-to">Unit to convert to</label>
-        <select name="unit-to-convert-to" id="unit-to-convert-to">
+        <select
+          name="unit-to-convert-to"
+          id="unit-to-convert-to"
+          aria-describedby="unit-to-convert-to-value-error"
+        >
           <option value="">Select an option:</option>
         </select>
+        <p id="unit-to-convert-to-value-error" style="display: none"></p>
       </div>
 
       <button type="submit">Convert</button>
     </form>
-    
+
     <p id="result-calc-lbl">Result of your calculation</p>
     <p id="converted-result"></p>
     <button id="reset">Reset</button>
