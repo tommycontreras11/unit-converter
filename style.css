@@ -36,6 +36,7 @@
     margin: 5px 0 0 0;
     border: 2px solid black;
     border-radius: 3px;
+    background-color: white;
 }
 
 .form button {
@@ -78,13 +79,13 @@
 }
 
 #length-value-error {
-    font-size: 12px;
+    font-size: 10px;
 }
 
 #unit-to-convert-from-value-error {
-    font-size: 12px;    
+    font-size: 10px;    
 }
 
 #unit-to-convert-to-value-error {
-    font-size: 12px;
+    font-size: 10px;
 }

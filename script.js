@@ -102,11 +102,7 @@ let unitToConvertToValueError = document.getElementById(
 
 let unitName = 0;
 
-// This is how i can get the id from the input
-console.log(
-  "input id: ",
-  document.querySelectorAll(".form .form-input p")[0].getAttribute("id"),
-);
+let fieldsErrors = [];
 
 cleanErrorFields = () => {
   let pElements = document.querySelectorAll(".form .form-input p");
@@ -174,17 +170,26 @@ validateFields = () => {
 
       if (error === false) cleanErrorFields();
     }
+
+    if (tagName === "SELECT") {
+      let nextInputId = pElements[i + 1]?.previousElementSibling?.id;
+      let nextInput = document.getElementById(nextInputId)?.value;
+
+      if (nextInput && nextInput == input) {
+        message = "The values of selects must be different";
+
+        pElement.innerText = message;
+        pElement.style.display = "block";
+        pElement.style.color = "red";
+
+        error = true;
+      }
+        if (error === false) cleanErrorFields();
+    }
   }
 
   return error;
 };
-
-// This is how i can get the tagname, i mean it says if the element is a p, select, etc
-console.log(
-  "input id: ",
-  document.querySelectorAll(".form .form-input p")[0].previousElementSibling
-    .tagName,
-);
 
 const unit = document.getElementById("unit");
 
@@ -268,8 +273,6 @@ form.addEventListener("submit", (event) => {
 
   if (isInvalidForm) return;
   else cleanErrorFields();
-
-  console.log("HOLA");
 
   let result = 0;
 
