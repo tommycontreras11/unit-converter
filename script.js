@@ -102,94 +102,87 @@ let unitToConvertToValueError = document.getElementById(
 
 let unitName = 0;
 
-let fieldsErrors = [];
+let fields = [
+  {
+    id: "length-to-convert",
+    errorId: "length-value-error",
+    type: "number",
+    required: true,
+  },
+  {
+    id: "unit-to-convert-from",
+    errorId: "unit-to-convert-from-value-error",
+    type: "select",
+    required: true,
+    validateAgainstOtherField: {
+      id: "unit-to-convert-to",
+    },
+  },
+  {
+    id: "unit-to-convert-to",
+    errorId: "unit-to-convert-to-value-error",
+    type: "select",
+    required: true,
+    validateAgainstOtherField: {
+      id: "unit-to-convert-from",
+    },
+  },
+];
 
-cleanErrorFields = () => {
-  let pElements = document.querySelectorAll(".form .form-input p");
+function getErrorElement(field) {
+  return document.getElementById(field.errorId);
+}
 
-  for (let i = 0; i < pElements.length; i++) {
-    let id = pElements[i].getAttribute("id");
+validateField = (field, form) => {
+  const element = form.elements[field.id];
+  const value = element.value.trim();
 
-    let pElement = document.getElementById(id);
-
-    if (pElement.textContent) {
-      pElement.innerHTML = "";
-      pElement.style.display = "none";
-    }
+  if (field.required && value === "") {
+    return "This field is required.";
   }
-};
 
-validateFields = () => {
-  let pElements = document.querySelectorAll(".form .form-input p");
-  let error = false;
+  if (field.type === "number" && value !== "") {
+    const numberValue = Number(value);
 
-  for (let i = 0; i < pElements.length; i++) {
-    let id = pElements[i].getAttribute("id");
-
-    // Inputs to validate
-    let tagName = pElements[i].previousElementSibling.tagName;
-    let inputId = pElements[i].previousElementSibling.id;
-
-    let pElement = document.getElementById(id);
-    let input = document.getElementById(inputId).value;
-
-    let message = "";
-
-    if (tagName === "INPUT") {
-      if (input === "") {
-        message = "The value is required";
-
-        pElement.innerText = message;
-        pElement.style.display = "block";
-        pElement.style.color = "red";
-
-        error = true;
-      } else if (isNaN(Number(input))) {
-        message = "The value must be a number";
-
-        pElement.innerText = message;
-        pElement.style.display = "block";
-        pElement.style.color = "red";
-
-        error = true;
-      }
-
-      if (error === false) cleanErrorFields();
-    }
-
-    if (tagName === "SELECT") {
-      if (input === "" || input === undefined) {
-        message = "The value is required";
-
-        pElement.innerText = message;
-        pElement.style.display = "block";
-        pElement.style.color = "red";
-
-        error = true;
-      }
-
-      if (error === false) cleanErrorFields();
-    }
-
-    if (tagName === "SELECT") {
-      let nextInputId = pElements[i + 1]?.previousElementSibling?.id;
-      let nextInput = document.getElementById(nextInputId)?.value;
-
-      if (nextInput && nextInput == input) {
-        message = "The values of selects must be different";
-
-        pElement.innerText = message;
-        pElement.style.display = "block";
-        pElement.style.color = "red";
-
-        error = true;
-      }
-        if (error === false) cleanErrorFields();
+    if (Number.isNaN(numberValue)) {
+      return "Invalid number.";
     }
   }
 
-  return error;
-};
+  if (field.type === "select" && value === "") {
+    return "Please select an option.";
+  }
+
+  if (field.validateAgainstOtherField && value !== "") {
+    const otherField = form.elements[field.validateAgainstOtherField.id];
+    const otherValue = otherField.value.trim();
+
+    if (otherValue !== "" && otherValue === value) {
+      return "The values of selects must be different.";
+    }
+  }
+
+  return "";
+}
+
+function validateFields(form, fields) {
+  let hasErrors = false;
+
+  for (const field of fields) {
+    const errorElement = getErrorElement(field);
+    const error = validateField(field, form);
+
+    errorElement.textContent = error;
+    errorElement.style.display = error ? "block" : "none";
+    errorElement.style.color = error ? "red" : "black";
+
+    if (error) {
+      hasErrors = true;
+    }
+  }
+
+  return hasErrors;
+}
 
 const unit = document.getElementById("unit");
 
@@ -269,10 +262,9 @@ form.addEventListener("submit", (event) => {
     (u) => u.name === formData.get("unit-to-convert-to"),
   );
 
-  const isInvalidForm = validateFields();
+  const isInvalidForm = validateFields(form, fields);
 
   if (isInvalidForm) return;
-  else cleanErrorFields();
 
   let result = 0;
 
